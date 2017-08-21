@@ -13,21 +13,18 @@
 	button{display:black;width:100%;padding:10px;margin:20px 0;background-color:green;
 	       border-radius:10px;color:#fff;
 	}
+	#div{
+		position: fixed;
+		width: 50px;
+		height: 50px;
+		background-color: red;
+		z-index: 100;
+	}
 	</style>
-	<link rel="stylesheet" href="css/dialog.css">
+	<link rel="stylesheet" href="css/dialog-1.css">
 </head>
 <body>
-	<!-- <div class="g-dialog-container">
-		<div class="dialog-window">
-			<div class="dialog-header loading"></div>
-			<div class="dialog-content">你是否要清除购物车</div>
-			<div class="dialog-footer">
-				<button class="green">按钮一</button>
-				<button class="red">按钮二</button>
-			</div>
-		</div>
-	</div>
- 	-->
+	<div id="div"></div>
 	
 	<!-- 该按钮不传递任何参数, 弹出loading弹出框 -->
 	<button id="btn1">不传参</button>
@@ -47,9 +44,26 @@
 	<!-- 弹出一个确认和删除的框, 点击确认按钮弹出加载框, 2秒后自动关闭, 点击删除按钮把上一次框关闭 -->
 	<button id="btn6">确认和删除框</button>
 
+	<button id="btn7">带动画的弹出框</button>
 	<script src="js/zepto.js"></script>
 	<script src="js/dialog.js"></script>
 	<script>
+
+		var d = $.dialog({
+			type: 'loading',
+			message: '我叫等待对话框',
+			buttons: [
+				{
+					type: 'green',
+					text: '你好'
+				},
+				{
+					type: 'red',
+					text: '我不好!'
+				}
+			]
+		});
+
 		$('#btn1').tap(function() {
 			var d = $.dialog({});
 		});
@@ -162,6 +176,25 @@
 					}
 				]
 			})
+		});
+
+		$('#btn7').tap(function() {
+			var d = $.dialog({
+				width: 250,
+				type: 'warning',
+				message: '你想干嘛?',
+				buttons: [
+					{
+						type: 'green',
+						text: '你好?'
+					},
+					{
+						type: 'red',
+						text: '不好!'
+					}
+				],
+				effect: true
+			});
 		});
 
 		/*

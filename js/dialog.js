@@ -16,7 +16,9 @@
 			// 弹出框延迟多久关闭
 			delay: null,
 			// 对话框遮罩层透明度
-			maskOpacity: null
+			maskOpacity: null,
+			// 是否启用动画
+			effect: null
 		};
 
 		// 扩展默认参数
@@ -45,8 +47,18 @@
 		// 渲染DOM
 		this.createDialog();
 	}
-
+	// 记录弹框的层级
+	Dialog.zIndex = 10000;
 	Dialog.prototype = {
+		// 动画函数
+		animate: function() {
+			var _this_ = this;
+			this.win.css('-webkit-transform', 'scale(0,0)');
+			setTimeout(function() {
+				_this_.win.css('-webkit-transform', 'scale(1,1)');
+			}, 100);
+		},
+		// 创建弹出框
 		createDialog: function() {
 			var _this_ = this,
 				config = this.config,
@@ -57,9 +69,17 @@
 				footer = this.winFooter,
 				body = this.body;
 
+			// 增加弹框的层级
+			Dialog.zIndex++;
+			this.mask.css('zIndex', Dialog.zIndex);
+			// 如果前面html页面没有传递config参数的话, 弹出loading弹出框
 			if (this.hasDeliverConfig === false) {
-				// 弹出loading弹出框
 				win.append(header.addClass('loading'));
+
+				if (config.effect === true) {
+					this.animate();
+				}
+
 				mask.append(win);
 				body.append(mask);
 			} else {
@@ -92,6 +112,10 @@
 					setTimeout(function() {
 						_this_.close();
 					}, config.delay);
+				}
+
+				if (config.effect === true) {
+					this.animate();
 				}
 			}
 		},
