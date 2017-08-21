@@ -13,19 +13,10 @@
 	button{display:black;width:100%;padding:10px;margin:20px 0;background-color:green;
 	       border-radius:10px;color:#fff;
 	}
-	#div{
-		position: fixed;
-		width: 50px;
-		height: 50px;
-		background-color: red;
-		z-index: 100;
-	}
 	</style>
 	<link rel="stylesheet" href="css/dialog-1.css">
 </head>
-<body>
-	<div id="div"></div>
-	
+<body>	
 	<!-- 该按钮不传递任何参数, 弹出loading弹出框 -->
 	<button id="btn1">不传参</button>
 
@@ -45,25 +36,15 @@
 	<button id="btn6">确认和删除框</button>
 
 	<button id="btn7">带动画的弹出框</button>
+
+	<button id="btn8">延时关闭加回调</button>
+
+	<!-- 这个按钮实现的功能是点击按钮后显示弹出框, 点击遮罩层实现关闭弹出框和遮罩层 -->
+	<button id="btn9">点击遮罩层关闭</button>
+
 	<script src="js/zepto.js"></script>
 	<script src="js/dialog.js"></script>
 	<script>
-
-		var d = $.dialog({
-			type: 'loading',
-			message: '我叫等待对话框',
-			buttons: [
-				{
-					type: 'green',
-					text: '你好'
-				},
-				{
-					type: 'red',
-					text: '我不好!'
-				}
-			]
-		});
-
 		$('#btn1').tap(function() {
 			var d = $.dialog({});
 		});
@@ -195,6 +176,36 @@
 				],
 				effect: true
 			});
+		});
+
+		$('#btn8').tap(function() {
+			$.dialog({
+				type: 'warning',
+				message: '延时关闭加回调',
+				delay: 2000,
+				delayCallback: function() {
+					// 自动关闭弹出框之后的回调函数
+					alert('111111111');
+				}
+			})
+		});
+
+		$('#btn9').tap(function() {
+			$.dialog({
+				type: 'warning',
+				message: '遮罩层点击是否可以关闭',
+				buttons: [
+					{
+						type: 'green',
+						txet: '按钮A'
+					},
+					{
+						type: 'red',
+						text: '按钮B'
+					}
+				],
+				closeByClickMask: true
+			})
 		});
 
 		/*

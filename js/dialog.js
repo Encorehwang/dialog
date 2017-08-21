@@ -15,10 +15,14 @@
 			buttons: null,
 			// 弹出框延迟多久关闭
 			delay: null,
+			// 延时关闭之后的回调函数
+			delayCallback: null,
 			// 对话框遮罩层透明度
 			maskOpacity: null,
 			// 是否启用动画
-			effect: null
+			effect: null,
+			// 指定点击遮罩层是否可以关闭弹出框
+			closeByClickMask: null
 		};
 
 		// 扩展默认参数
@@ -62,6 +66,7 @@
 		createDialog: function() {
 			var _this_ = this,
 				config = this.config,
+				delayCallback = this.config.callback,
 				mask = this.mask,
 				win = this.win,
 				header = this.winHeader,
@@ -72,6 +77,7 @@
 			// 增加弹框的层级
 			Dialog.zIndex++;
 			this.mask.css('zIndex', Dialog.zIndex);
+			
 			// 如果前面html页面没有传递config参数的话, 弹出loading弹出框
 			if (this.hasDeliverConfig === false) {
 				win.append(header.addClass('loading'));
@@ -111,11 +117,25 @@
 				if (config.delay && config.delay !== 0) {
 					setTimeout(function() {
 						_this_.close();
+						// 执行延时的回调函数
+						if (config.delayCallback) {
+							config.delayCallback();
+						}
 					}, config.delay);
 				}
 
 				if (config.effect === true) {
 					this.animate();
+				}
+
+				// 指定点击遮罩层是否可以关闭弹出框
+				if (config.closeByClickMask) {
+					mask.tap(function() {
+						_this_.close();
+					});
+					win.tap(function() {
+						return false;
+					});
 				}
 			}
 		},
