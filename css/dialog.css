@@ -44,6 +44,9 @@
 }
 .g-dialog-container .dialog-window .dialog-footer{
 	padding: 1em 1em 0;
+	display: -webkit-flex;
+	-webkit-justify-content: center;
+	-webkit-align-items: center;
 }
 .g-dialog-container .dialog-window .dialog-footer button{
 	-webkit-appearance: normal;

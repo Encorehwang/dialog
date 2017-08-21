@@ -10,14 +10,14 @@
 	<style>
 	*{margin:0;padding:0}
 	body{font-size:12px;padding:20px;}
-	/*button{display:black;width:100%;padding:10px;margin:20px 0;background-color:green;
+	button{display:black;width:100%;padding:10px;margin:20px 0;background-color:green;
 	       border-radius:10px;color:#fff;
-	}*/
+	}
 	</style>
 	<link rel="stylesheet" href="css/dialog.css">
 </head>
 <body>
-	<div class="g-dialog-container">
+	<!-- <div class="g-dialog-container">
 		<div class="dialog-window">
 			<div class="dialog-header loading"></div>
 			<div class="dialog-content">你是否要清除购物车</div>
@@ -27,13 +27,172 @@
 			</div>
 		</div>
 	</div>
+ 	-->
+	
+	<!-- 该按钮不传递任何参数, 弹出loading弹出框 -->
+	<button id="btn1">不传参</button>
 
-	<!-- <button id="btn1">没有传递任何参数</button>
-	<button id="btn2">弹出一个不带按钮的警告框，并且两秒后关闭</button>
-	<button id="btn3">有一个确认和取消按钮，点击按钮直接关闭</button>
-	<button id="btn4">有一个多组合的按钮框</button>
-	<button id="btn5">弹出确认删除框，点击确认弹出危险框点击关闭全部关闭</button>
-	<button id="btn6">动画弹框，从小到大</button>
-	<button id="btn7">弹出一个不带按钮的警告框，并且两秒后关闭,延时函数</button> -->
+	<!-- 弹出一个不带任何按钮的警告框，并且两秒后关闭 -->
+	<button id="btn2">警告框</button>
+
+	<!-- 有一个确认和取消按钮的成功狂，点击按钮直接关闭 -->
+	<button id="btn3">确认和取消</button>
+
+	<!-- 弹出一个有确认按钮的警告框, 点击按钮无法关闭(需手动关闭) -->
+	<button id="btn4">无法关闭的警告框</button>
+
+	<!-- 弹出一个多组合的按钮框, 并且按钮样式可定制 -->
+	<button id="btn5">多组合</button>
+
+	<!-- 弹出一个确认和删除的框, 点击确认按钮弹出加载框, 2秒后自动关闭, 点击删除按钮把上一次框关闭 -->
+	<button id="btn6">确认和删除框</button>
+
+	<script src="js/zepto.js"></script>
+	<script src="js/dialog.js"></script>
+	<script>
+		$('#btn1').tap(function() {
+			var d = $.dialog({});
+		});
+
+		$('#btn2').tap(function() {
+			var d = $.dialog({
+				type: 'warning',
+				message: '2秒后我会关闭',
+				delay: 2000
+			});
+		});
+
+		$('#btn3').tap(function() {
+			var d = $.dialog({
+				type: 'ok',
+				message: '您想要关闭吗?',
+				buttons: [
+					{
+						type: 'green',
+						text: '成功'
+					},
+					{
+						type: 'red',
+						text: '取消'
+					}
+				]
+			});
+		});
+
+		$('#btn4').tap(function() {
+			var d = $.dialog({
+				type: 'warning',
+				message: '我是警告框',
+				buttons: [
+					{
+						type: 'red',
+						text: '确认',
+						callback: function() {
+							return false;
+						}
+					}
+				]
+			});
+		});
+
+		$('#btn5').tap(function (){
+			var d = $.dialog({
+				type: 'warning',
+				message: '多组合的按钮狂样式可定制',
+				buttons: [
+					{
+						text: '默认',
+						callback: function() {
+							alert('哈哈哈');
+						}
+					},
+					{
+						type: 'red',
+						text: '确定',
+						callback: function() {
+							alert('点击我不会关闭哟!');
+						}
+					},
+					{
+						type: 'green',
+						text: '好吧',
+						callback: function() {
+							alert('点击我会关闭的!!');
+							return true;
+						}
+					}
+				]
+			})
+		});
+
+		$('#btn6').tap(function() {
+			var d = $.dialog({
+				type: 'warning',
+				message: '我叫警告框',
+				buttons: [
+					{
+						type: 'green',
+						text: '确认',
+						callback: function() {
+							var d2 = $.dialog({
+								type: 'loading',
+								delay: 2000
+							});
+						}
+					},
+					{
+						type: 'red',
+						text: '删除',
+						callback: function() {
+							$.dialog({
+								type: 'warning',
+								buttons: [
+									{
+										type: 'warning',
+										text: '删除之前的弹框',
+										callback: function() {
+											d.close();
+											return true;
+										}
+									}
+								]
+							});
+							return false;
+						}
+					}
+				]
+			})
+		});
+
+		/*
+		var d = $.dialog({
+			// 对话框的提示信息
+			message: "你还好吗??",
+			// 弹出框的类型
+			type: 'warning',
+			// 按钮配置
+			buttons: [
+				{
+					type: 'red',
+					text: '不好',
+					callback: function() {
+						alert(1);
+						// return true表示我想要执行完毕后关闭这个弹出框
+						return true;
+					}
+				},
+				{
+					type: 'green',
+					text: '好呀',
+					callback: function() {
+						alert(2);
+					}
+				}
+			],
+			// 对话框遮罩层透明度
+			maskOpacity: 0.8
+		});
+		*/
+	</script>
 </body>
 </html>
